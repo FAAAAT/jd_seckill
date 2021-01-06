@@ -5,6 +5,8 @@ import functools
 import json
 import os
 import pickle
+import ASCII_Image
+import platform
 
 from lxml import etree
 from jd_logger import logger
@@ -175,7 +177,11 @@ class QrLogin:
 
         save_image(resp, self.qrcode_img_file)
         logger.info('二维码获取成功，请打开京东APP扫描')
-        open_image(self.qrcode_img_file)
+        if platform.system() == "Windows":
+            open_image(self.qrcode_img_file)
+        else:
+            charQR = ASCII_Image.covertImageToAscii(self.qrcode_img_file, 45, 1, False)
+            print(charQR)
         return True
 
     def _get_qrcode_ticket(self):
